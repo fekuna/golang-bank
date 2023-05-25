@@ -20,3 +20,18 @@ test:
 	go test -v -cover ./...
 
 .PHONY: postgres createdb dropdb migrateup migratedown test
+
+# ==============================================================================
+# Docker support
+
+FILES := $(shell docker ps -aq)
+
+down-local:
+	docker stop $(FILES)
+	docker rm $(FILES)
+
+clean:
+	docker system prune -f
+
+logs-local:
+	docker logs -f $(FILES)
